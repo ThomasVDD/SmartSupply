@@ -1,0 +1,12 @@
+I changed and added several features.
+* Replaced discrete DAC for voltage setting with PWM and lowpass filter DAC.
+* Added capability of going down to 0V output voltage, by adding a negative supply (charge pump).
+* Fixed the input buffer by using a rail-to-rail opamp.
+* Changed charging circuitry to use hand solderable components.
+* Changed boost converter for the same reason.
+* Added on board FTDI chip for communication via micro USB port.
+* Removed ethernet module.
+* Changed screen to more generic type in stead of I2C type.
+* Changed digital voltage to 5V instead of 3.3V
+* Last but not least: tested the schematic and verified the working. 
+

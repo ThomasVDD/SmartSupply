@@ -1,0 +1,5 @@
+FTDI BREAKOUT
+
+Board: arduino Fio / arduino pro or pro mini
+Programmer: AVR ISP
+
