@@ -1,6 +1,6 @@
 The schematic of this project is a derivative of the uSupply (rev C, https://www.eevblog.com/projects/usupply/) project from David L. Jones (EEVBLOG.com).
-It is licensed under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/) 
-My version, SmartSupply by Thomas Van den Dries (github.com/ThomasVDD) is licensed under CC BY 3.0. 
+It is licensed under CC BY SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0/) 
+My version, SmartSupply by Thomas Van den Dries (github.com/ThomasVDD) is licensed under CC BY SA 3.0. 
 
 
 Creative Commons Legal Code
