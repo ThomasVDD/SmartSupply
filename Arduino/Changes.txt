@@ -1,6 +1,6 @@
-2.5 = 2.048V reference
-10V => 20V maximum
-
+2.5  => 2.048V reference
+10V  => 20V maximum
+9600 => 4800 baud rate
 
 BOOTLOADER
 C:\Program Files (x86)\Arduino\hardware\tools\avr\etc
