@@ -196,7 +196,7 @@ public class settingPanel extends JPanel implements ActionListener  {
 		//Voltage: send number 0-999
 		if (actionEvent.getSource() == buttonList[1] || actionEvent.getSource() == textFieldList[0]) 
 		{
-			float voltage = 100*Float.parseFloat(textFieldList[0].getText());
+			float voltage = 50*Float.parseFloat(textFieldList[0].getText());
 			if (voltage < 1000 && voltage >= 0){
 				output.print(voltage);
 				output.flush();

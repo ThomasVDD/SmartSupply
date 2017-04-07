@@ -3,3 +3,5 @@ FTDI BREAKOUT
 Board: arduino Fio / arduino pro or pro mini
 Programmer: AVR ISP
 
+For burning the bootloader: https://www.arduino.cc/en/Tutorial/ArduinoToBreadboard
+If you accidently ordered ATMEGA328-PU instead of ATMEGA328P-PU: https://www.instructables.com/id/Bootload-an-ATmega328/

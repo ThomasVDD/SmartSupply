@@ -1,15 +1,26 @@
-/* Thomas Van den Dries - ThomasVDD on Instructables
-* upload as arduino nano, processer atmega328p
-*/
-
+/* //==\\ ||\\  //||     //\\     ||===\\   ========  //==\\  ||    ||  ||===\\   ||===\\   ||        \\    //
+ * ||     || \\// ||    //  \\    ||    ||     ||     ||      ||    ||  ||    ||  ||    ||  ||         \\  //
+ * \\==\\ ||  \/  ||   //    \\   ||===//      ||     \\==\\  ||    ||  ||===//   ||===//   ||          \\//
+ *     || ||      ||  //======\\  ||   \\      ||         ||  ||    ||  ||        ||        ||           //
+ * \\==// ||      || //        \\ ||    \\     ||     \\==//  \\====//  ||        ||        ||======    //
+ * 
+ * Thomas Van den Dries
+ * github.com/ThomasVDD
+ * ThomasVDD on Instructables 
+ * 
+ * Board: arduino Fio / arduino pro or pro mini
+ * Programmer: AVR ISP / AVRISP MKII
+ * For burning the bootloader: https://www.arduino.cc/en/Tutorial/ArduinoToBreadboard
+ * If you accidently ordered ATMEGA328-PU instead of ATMEGA328P-PU: https://www.instructables.com/id/Bootload-an-ATmega328/
+ */
 
 /* ============================================== LIBRARIES =======================================================*/
 #include<SPI.h>
-#include <EEPROM.h>
+#include<EEPROM.h>
 #include<LiquidCrystal.h>
 LiquidCrystal lcd(8);
-#include <Wire.h>
-#include <INA219.h>
+#include<Wire.h>
+#include<INA219.h>
 INA219 ina219;
 
 /* ============================================== DECLARATIONS =====================================================*/
@@ -32,6 +43,7 @@ float averageB = 0;
 float batteryVoltage;
 
 int boostConverter = 0;
+int boostVoltage = 0;
 int potentiometerPin = A1;
 int chargePump = 5;
 
@@ -85,23 +97,30 @@ String message[] = {"CALIB", "TOTAL"}; // calibration messages
 float calibration[] = {0, 0};       // keeps the calibrated current
 int presetButton = 7;               // switch for presets
 int preset;                         // tracks the current preset
-int presetV[] = {0, 0, 330, 500, 500, 999}; // voltage presets
-int presetA[] = {0, 0, 100, 100, 999, 500}; // current presets
+int presetV[] = {0, 0, 165, 250, 500, 999}; // voltage presets
+int presetA[] = {0, 0, 330, 500, 999, 999}; // current presets
 int numberOfPresets = 6;            // length of the array. First preset used for saved value
 
 /* ============================================== SETUP =====================================================*/
 void setup() {
-  Serial.begin (9600);              // start serial communication
-  ina219.begin();
-  setupPWM16();                     // initialize the 10 bit pwm
-  
+  Serial.begin(4800);              // start serial communication
+    
   lcd.begin(16, 2);                 // initialize lcd
+  lcd.setCursor(0, 0);
+  lcd.print("  SmartSupply");
+  lcd.setCursor(0, 1);
+  lcd.print("   ThomasVDD");
+  delay(2500);
+  
   lcd.createChar(0, batt0);
   lcd.createChar(1, batt1);
   lcd.createChar(3, batt3);
   lcd.createChar(4, batt4);
   lcd.createChar(6, batt6);
   lcd.createChar(7, batt7);
+
+  ina219.begin();                   // initialize ina219
+  setupPWM16();                     // initialize the 10 bit pwm
 
   pinMode(presetButton, INPUT);
   digitalWrite(presetButton, HIGH);   //turn on pullup resistor
@@ -113,8 +132,10 @@ void setup() {
   analogWrite(chargePump, 127);       //50% pwm
 
   encoder0Pos = EEPROMReadInt(0);   // retreive the previous voltage value from memory
+  pos0 = map(encoder0Pos, 0, 50000, 0, 999); //map to 0 - 5 V ==> 1mA / step
   presetA[0] = map(encoder0Pos, 0, 50000, 0, 999);
   encoder1Pos = EEPROMReadInt(2);   // retreive the previous current value from memory
+  pos1 = map(encoder1Pos, 0, 50000, 0, 999); //map to 0 - 5 V ==> 10mV / step
   presetV[0] = map(encoder1Pos, 0, 50000, 0, 999);
   //preset = EEPROMReadInt(4);        // retreive the previous preset from memory
 
@@ -151,12 +172,12 @@ void setup() {
                 012345
   */
   lcd.setCursor(0, 0);
-  lcd.print("SET");
+  lcd.print("SET             ");
   lcd.setCursor(0, 1);
-  lcd.print("OUT");
+  lcd.print("OUT             ");
   lcd.setCursor(8, 0);
   lcd.print("V");
-  lcd.setCursor(8, 1);
+  lcd.setCursor(8, 1);  
   lcd.print("V");
   lcd.setCursor(13, 0);
   lcd.print("mA");
@@ -281,7 +302,7 @@ void loop() {
     readIndexV = 0;                             //...wrap around to the beginning
   }
   averageV = totalV / numReadingsV;             //calculate the average
-  realAverageV = averageV * 2.5 * 5 / 1023;     //map 1-2.048V range to corresponding value
+  realAverageV = averageV * 2.048 * 5 / 1023;     //map 1-2.048V range to corresponding value
 
   /*Measure the current & average for lower noise*/
   totalA = totalA - readingsA[readIndexA];
@@ -292,7 +313,7 @@ void loop() {
     readIndexA = 0;
   }
   averageA = totalA / numReadingsA;
-  realAverageA = (averageA * 2.5 * 0.5 / 1.023);
+  realAverageA = (averageA * 2.048 * 0.5 / 1.023);
 
   /*Measure the current with the INA219*/
   if (realAverageA < 300){                      // current < 320 mA can be measured with INA219
@@ -319,7 +340,7 @@ void loop() {
   }
 
   /* Send data to JAVA as: Voltage>Current>*/
-  Serial.print(realAverageV);                   //send measured voltage
+  Serial.print(realAverageV*2);                   //send measured voltage
   Serial.print(">");
   if (finalA < 0) {                             // current lower than calibrate current
     finalA = 0;
@@ -331,11 +352,18 @@ void loop() {
   }
 
   /*  set the boost converter for the desired output*/
-  if (pos1<250){
+  boostVoltage = (pos1+125)*0.02;
+  //boost converter off for voltages < 5V
+  if (pos1<375){
     boostConverter = 0;
   }
   else{
-    boostConverter = 255 - ((34375/(pos1+50))-25);
+    //boostVoltage = 255 - ((36955 - 1364*boostVoltage)/(2.2*boostVoltage - 15,250))*(255/10000);
+    boostConverter = 260 - ((36955 - 1364*boostVoltage)/(2.2*boostVoltage - 15.25))*0.0255;
+    if (boostConverter > 255){
+      boostConverter = 255;
+    }
+    //MAXIMUM 252
   }
 
   SPI.setClockDivider(SPI_CLOCK_DIV8);          //ensure correct clockdivider (lcd library also uses a clockdivider)
@@ -346,8 +374,15 @@ void loop() {
 
   /*write to the LCD*/ 
   lcd.setCursor(4, 0);
-  lcd.print(pos1 / 100 , 2);
+  if (pos1/50 < 9.994){       // <10 doesn't work because 9.995 < 10, but lcd.print(9.995,2) gives 10,00
+    lcd.print(pos1 / 50 , 2);
+  }
+  else{
+    lcd.print(pos1 / 50 , 1);
+  }
+  
   lcd.setCursor(4, 1);
+  realAverageV *= 2; //map to 0-20V range
   if (realAverageV < 9.994){       // <10 doesn't work because 9.995 < 10, but lcd.print(9.995,2) gives 10,00
     lcd.print(realAverageV, 2);
   }
@@ -521,17 +556,17 @@ void SOC()
     readIndexB = 0;                             //...wrap around to the beginning
   }
   averageB = totalB / numReadingsB;             //calculate the average
-  batteryVoltage = averageB * 2.5 * 2 / 1024;   //map 1-2.048V range to corresponding value
-  if (batteryVoltage >= 4.1) {
+  batteryVoltage = averageB * 2.048 * 4.09 / 1024;   //map 1-2.048V range to corresponding value: (2.2k + 8.8k)/2.2k = 4.09
+  if (batteryVoltage >= 8.2) {
     batteryLevel = 4;
   }
-  else if (batteryVoltage >= 3.8) {
+  else if (batteryVoltage >= 7.6) {
     batteryLevel = 3;
   }
-  else if (batteryVoltage >= 3.6) {
+  else if (batteryVoltage >= 7.2) {
     batteryLevel = 2;
   }
-  else if (batteryVoltage >= 3.3) {
+  else if (batteryVoltage >= 6.6) {
     batteryLevel = 1;
   }
   else {

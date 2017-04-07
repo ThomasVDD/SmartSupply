@@ -14,7 +14,7 @@ public class PowerSupply {
 
 	}
 	public PowerSupply() throws FileNotFoundException{
-		window = new JFrame("PowerSupply");
+		window = new JFrame("SmartSupply");
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
