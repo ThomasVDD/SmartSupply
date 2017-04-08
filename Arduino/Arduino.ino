@@ -106,12 +106,6 @@ void setup() {
   Serial.begin(4800);              // start serial communication
 
   lcd.begin(16, 2);                 // initialize lcd
-  lcd.setCursor(0, 0);
-  lcd.print("  SmartSupply");
-  lcd.setCursor(0, 1);
-  lcd.print("   ThomasVDD");
-  delay(2500);
-  
   lcd.createChar(0, batt0);
   lcd.createChar(1, batt1);
   lcd.createChar(3, batt3);
@@ -162,6 +156,13 @@ void setup() {
   for (int thisReading = 0; thisReading < numReadingsB; thisReading++) {
     readingsB[thisReading] = 0;
   }
+
+  /* Show welcome message */
+  lcd.setCursor(0, 0);
+  lcd.print("  SmartSupply");
+  lcd.setCursor(0, 1);
+  lcd.print("   ThomasVDD");
+  delay(2500);
 
   /* setup 16x2 lcd display:
      ------------------
