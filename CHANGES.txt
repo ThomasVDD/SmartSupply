@@ -5,6 +5,7 @@ I changed and added several features.
 * Changed charging circuitry to use hand solderable components.
 * Changed boost converter for the same reason.
 * Added on board FTDI chip for communication via micro USB port.
+* I left the FTDI breakout header so you can avoid the FTDI chip (difficult footprint) and use an off the shelf solution
 * Removed ethernet module.
 * Changed screen to more generic type in stead of I2C type.
 * Changed digital voltage to 5V instead of 3.3V
