@@ -1,7 +1,0 @@
-2.5  => 2.048V reference
-10V  => 20V maximum
-9600 => 4800 baud rate
-
-BOOTLOADER
-C:\Program Files (x86)\Arduino\hardware\tools\avr\etc
-verander: "signature = 0x1e 0x95 0x0F;" naar signature = 0x1e 0x95 0x14;" voor atmega 328P
