@@ -104,13 +104,7 @@ int numberOfPresets = 6;            // length of the array. First preset used fo
 /* ============================================== SETUP =====================================================*/
 void setup() {
   Serial.begin(4800);              // start serial communication
-<<<<<<< HEAD
-    
-=======
-  ina219.begin();
-  setupPWM16();                     // initialize the 10 bit pwm
-  
->>>>>>> 82bcd3c26a4c1cf242798616fc9f41a66964eef5
+
   lcd.begin(16, 2);                 // initialize lcd
   lcd.setCursor(0, 0);
   lcd.print("  SmartSupply");
@@ -358,23 +352,16 @@ void loop() {
   }
 
   /*  set the boost converter for the desired output*/
-  boostVoltage = (pos1+125)*0.02;
+  boostVoltage = (pos1+125)*0.02; //add 125 to take the extra 2.5V into account
   //boost converter off for voltages < 5V
   if (pos1<375){
     boostConverter = 0;
   }
   else{
-<<<<<<< HEAD
-    //boostVoltage = 255 - ((36955 - 1364*boostVoltage)/(2.2*boostVoltage - 15,250))*(255/10000);
     boostConverter = 260 - ((36955 - 1364*boostVoltage)/(2.2*boostVoltage - 15.25))*0.0255;
     if (boostConverter > 255){
       boostConverter = 255;
     }
-=======
-    boostConverter = 255 - ((34375/(pos1+50))-25);
-    boostConverter = 252;
->>>>>>> 82bcd3c26a4c1cf242798616fc9f41a66964eef5
-    //MAXIMUM 252
   }
 
   SPI.setClockDivider(SPI_CLOCK_DIV8);          //ensure correct clockdivider (lcd library also uses a clockdivider)
