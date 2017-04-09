@@ -1,23 +1,11 @@
 ** Drc report for C:/Users/Thoma/Google Drive/5 Projecten/PSU V2/PCB/PSU_PCB.kicad_pcb **
 ** Created on  **
 
-** Found 2 DRC errors **
-ErrType(14): Two track ends too close
-    @ (164.590 mm,123.920 mm): Track 1.270 mm, net [Net-(BT1-Pad1)] (55) on layer F.Cu, length: 4.530 mm
-    @ (165.290 mm,118.690 mm): Track 1.270 mm, net [Net-(D8-Pad2)] (109) on layer F.Cu, length: 1.760 mm
-ErrType(16): Two track ends too close
-    @ (164.590 mm,119.390 mm): Track 1.270 mm, net [Net-(BT1-Pad1)] (55) on layer F.Cu, length: 0.990 mm
-    @ (165.290 mm,118.690 mm): Track 1.270 mm, net [Net-(D8-Pad2)] (109) on layer F.Cu, length: 1.760 mm
+** Found 0 DRC errors **
 
-** Found 3 unconnected pads **
+** Found 1 unconnected pads **
 ErrType(2): Unconnected pads
-    @ (129.645 mm,165.005 mm): Pad 1 on F.Cu, Non-copper of D8 net Net-(BT1-Pad1)
-    @ (126.030 mm,137.270 mm): Pad 1 on F.Cu, B.Cu, Internal, Non-copper of BT1
-ErrType(2): Unconnected pads
-    @ (167.760 mm,96.010 mm): Pad 2 on F.Cu, B.Cu, Internal, Non-copper of R48 net Net-(R48-Pad2)
-    @ (165.824 mm,100.124 mm): Pad 2 on F.Cu, B.Cu, Internal, Non-copper of U7
-ErrType(2): Unconnected pads
-    @ (167.050 mm,118.690 mm): Pad 2 on F.Cu, B.Cu, Internal, Non-copper of Q1 net Net-(D8-Pad2)
-    @ (135.045 mm,165.005 mm): Pad 2 on F.Cu, Non-copper of D8
+    @ (58.420 mm,37.846 mm): Pad 6 on F.Cu, B.Cu, Internal, Non-copper of P2 net GND
+    @ (57.868 mm,46.919 mm): Pad 7 on F.Cu, Non-copper of U9
 
 ** End of Report **
