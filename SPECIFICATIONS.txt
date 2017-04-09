@@ -1,0 +1,36 @@
+SmartSupply is a digital battery powered lab powersupply. It is Arduino compatible and can be controlled via PC over USB.
+
+Specifications:
+ * 0 - 1A,  steps of 1 mA  (10 bit DAC)
+ * 0 - 20V, steps of 20 mV (10 bit DAC) (true 0V operation)
+ * Current measurement: < 40mA:  10uA resolution (ina219)
+ 					    < 80mA:  20uA resolution (ina219)
+ 					    < 160mA: 40uA resolution (ina219)
+					    < 320mA: 80uA resolution (ina219)
+					    > 320mA: 1mA  resolution (10 bit ADC)
+ * Voltage measurement: 20 mV resolution (10 bit ADC)
+ 
+Features: 
+ * Constant voltage and constant current modes
+ * Uses a low noise linear regulator, preceded by a tracking preregulator to minimize power dissipation
+ * Aluminium case end panel used as heatsink 
+ * Use of handsolderable components to keep the project accessible 
+ * Programmed with Arduino IDE
+ * PC communication via Java over micro usb
+ * Powered by 2 protected 18650 Lithium Ion cells
+
+
+The schematic is a derivative of EEVBLOG's uSupply (see LICENSE.txt).
+These are the most noticable changes from his schematic: 
+ * Replaced discrete DAC for voltage setting with PWM and lowpass filter DAC (10 bit).
+ * Added capability of going down to 0V output voltage, by adding a negative supply (charge pump).
+ * Fixed the input buffer by using a rail-to-rail opamp.
+ * Changed charging circuitry to use hand solderable components.
+ * Changed boost converter for the same reason.
+ * Added on board FTDI chip for communication via micro USB port.
+ * I left the FTDI breakout header so you can avoid the FTDI chip (difficult footprint) and use an off the shelf solution
+ * Removed ethernet module.
+ * Changed screen to more generic type in stead of I2C type.
+ * Changed digital voltage to 5V instead of 3.3V
+ * Last but not least: tested the schematic and verified the working. 
+
