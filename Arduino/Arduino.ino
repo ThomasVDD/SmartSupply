@@ -18,9 +18,9 @@
 #include<SPI.h>
 #include<EEPROM.h>
 #include<LiquidCrystal.h>
-LiquidCrystal lcd(8);
 #include<Wire.h>
 #include<INA219.h>
+LiquidCrystal lcd(8);
 INA219 ina219;
 
 /* ============================================== DECLARATIONS =====================================================*/
@@ -58,8 +58,8 @@ boolean outputOnOff = 0;
 #define encoder1PinA  3
 #define encoderPinB  4
 
-volatile unsigned int encoder0Pos;  // keep the position of the rotary encoders
-volatile unsigned int encoder1Pos;
+volatile unsigned int encoder0Pos;  // keep the position of the voltage rotary encoder (0 - 50000)
+volatile unsigned int encoder1Pos;  // keep the position of the current rotary encoder (0 - 50000)
 int amount0 = 10;                   // changes the amount counter 0 is increased or decreased
 int amount1 = 10;
 unsigned long prevTime0 = 0;        // stores the previous time the interrupt was executed
@@ -68,10 +68,10 @@ int ticks0 = 0;                     // stores the number of times the intterupt 
 int ticks1 = 0;
 int prevEncoder0Pos = 0;            // tracks a change in value
 int prevEncoder1Pos = 0;
-volatile float pos0;                //keep the position of the encoder, mapped to 0-999
-volatile float pos1;                //keep the position of the encoder, mapped to 0-1000
+volatile float pos0;                //keep the value of the voltage (0 - 20V mapped to 0-999)
+volatile float pos1;                //keep the value of the current (0 - 1A  mapped to 0-999)
 
-/*averages for volatge and current*/
+/*averages for voltage and current*/
 const int numReadingsV = 20;        // number of readings to be averaged
 int readingsV[numReadingsV];        // the readings from the analog input
 int readIndexV = 0;                 // the index of the current reading
@@ -103,18 +103,17 @@ int numberOfPresets = 6;            // length of the array. First preset used fo
 
 /* ============================================== SETUP =====================================================*/
 void setup() {
-  Serial.begin(4800);              // start serial communication
+  Serial.begin(4800);               // start serial communication
+  ina219.begin();                   // initialize ina219
+  setupPWM16();                     // initialize the 10 bit pwm
 
-  lcd.begin(16, 2);                 // initialize lcd
+  lcd.begin(16, 2);                 // initialize lcd & make battery symbols
   lcd.createChar(0, batt0);
   lcd.createChar(1, batt1);
   lcd.createChar(3, batt3);
   lcd.createChar(4, batt4);
   lcd.createChar(6, batt6);
   lcd.createChar(7, batt7);
-
-  ina219.begin();                   // initialize ina219
-  setupPWM16();                     // initialize the 10 bit pwm
 
   pinMode(presetButton, INPUT);
   digitalWrite(presetButton, HIGH);   //turn on pullup resistor
@@ -123,15 +122,15 @@ void setup() {
   pinMode(potentiometerPin, OUTPUT);
   digitalWrite(potentiometerPin, HIGH);
   pinMode(chargePump, OUTPUT);
-  analogWrite(chargePump, 127);       //50% pwm
+  analogWrite(chargePump, 127);       //50% pwm for charge pump 
 
-  encoder0Pos = EEPROMReadInt(0);   // retreive the previous voltage value from memory
-  pos0 = map(encoder0Pos, 0, 50000, 0, 999); //map to 0 - 5 V ==> 1mA / step
+  encoder0Pos = EEPROMReadInt(0);                    // retreive the previous voltage value from memory
+  pos0 = map(encoder0Pos, 0, 50000, 0, 999);         //map to 0 - 5 V ==> 1mA / step
   presetA[0] = map(encoder0Pos, 0, 50000, 0, 999);
-  encoder1Pos = EEPROMReadInt(2);   // retreive the previous current value from memory
-  pos1 = map(encoder1Pos, 0, 50000, 0, 999); //map to 0 - 5 V ==> 10mV / step
+  encoder1Pos = EEPROMReadInt(2);                    // retreive the previous current value from memory
+  pos1 = map(encoder1Pos, 0, 50000, 0, 999);         //map to 0 - 5 V ==> 20mV / step
   presetV[0] = map(encoder1Pos, 0, 50000, 0, 999);
-  //preset = EEPROMReadInt(4);        // retreive the previous preset from memory
+  //preset = EEPROMReadInt(4);                       // retreive the previous preset from memory
 
   //encoder 0
   pinMode(encoder0PinA, INPUT);
@@ -145,8 +144,9 @@ void setup() {
   pinMode(encoderPinB, INPUT);
   digitalWrite(encoderPinB, HIGH);       // turn on pullup resistor
 
-  analogReference(EXTERNAL);              //external voltage reference of 2.048 V
-  //initialize all the readings to 0
+  analogReference(EXTERNAL);             //external voltage reference of 2.048 V
+  
+  /* initialize all the readings to 0 */
   for (int thisReading = 0; thisReading < numReadingsV; thisReading++) {
     readingsV[thisReading] = 0;
   }
@@ -188,6 +188,16 @@ void setup() {
 }
 
 /* ============================================== LOOP =====================================================*/
+/* 1) read serial data from java
+ * 2) poll buttons 
+ * 3) measure voltage
+ * 4) measure current
+ * 5) measure current with ina219
+ * 6) send serial data to java
+ * 7) get battery charge 
+ * 8) update screen
+ */
+
 void loop() {
   /*read serial input: voltage 0-999, current 1000-1999*/
   while (Serial.available()) {
