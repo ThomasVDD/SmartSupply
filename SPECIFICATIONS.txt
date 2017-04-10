@@ -15,9 +15,10 @@ Features:
  * Uses a low noise linear regulator, preceded by a tracking preregulator to minimize power dissipation
  * Aluminium case end panel used as heatsink 
  * Use of handsolderable components to keep the project accessible 
- * Programmed with Arduino IDE
- * PC communication via Java over micro usb
+ * Powered by ATMEGA328P, programmed with Arduino IDE
+ * PC communication via Java application over micro usb
  * Powered by 2 protected 18650 Lithium Ion cells
+ * 18 mm spaced banana plugs for compatibility with BNC adapters
 
 
 The schematic is a derivative of EEVBLOG's uSupply (see LICENSE.txt).

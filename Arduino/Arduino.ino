@@ -24,6 +24,12 @@ LiquidCrystal lcd(8);
 INA219 ina219;
 
 /* ============================================== DECLARATIONS =====================================================*/
+/* regulator_output is the only value that should be changed to calibrate the powersupply
+ * Measure the output voltage of the 5V voltage regulator and put it below
+ */
+float regulator_output = 4.94;
+/* Now, the error can be calculated and used to calibrate */
+float regulator_error = regulator_output / 5;
 /* make symbols for battery level*/
 byte batt0[8] = {B00000, B00000, B00000, B00000, B00000, B00000, B00000,};
 byte batt1[8] = {B00000, B00000, B00000, B00000, B00000, B00000, B00111,};
@@ -105,7 +111,7 @@ int numberOfPresets = 6;            // length of the array. First preset used fo
 void setup() {
   Serial.begin(4800);               // start serial communication
   ina219.begin();                   // initialize ina219
-  setupPWM16();                     // initialize the 10 bit pwm
+  setupPWM16(regulator_error);                     // initialize the 10 bit pwm
 
   lcd.begin(16, 2);                 // initialize lcd & make battery symbols
   lcd.createChar(0, batt0);
@@ -513,13 +519,13 @@ void doEncoder1() { //Voltage
 }
 
 /* Configure digital pins 9 and 10 as 16-bit PWM outputs. */
-void setupPWM16() {
+void setupPWM16(float error) {
   DDRB |= _BV(PB1) | _BV(PB2);        /* set pins as outputs */
   TCCR1A = _BV(COM1A1) | _BV(COM1B1)  /* non-inverting PWM */
            | _BV(WGM11);              /* mode 14: fast PWM, TOP=ICR1 */
   TCCR1B = _BV(WGM13) | _BV(WGM12)
            | _BV(CS10);               /* no prescaling */
-  ICR1 = 0x3E8;                       /* TOP counter value = 1000; +/- 10 bit resolution @ 15 kHz*/
+  ICR1 = 0x3E8 * error;                       /* TOP counter value = 1000; +/- 10 bit resolution @ 15 kHz*/
 }
 
 /* 16-bit version of analogWrite(). Works only on pins 9 and 10. */
