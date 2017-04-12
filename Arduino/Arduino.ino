@@ -8,7 +8,7 @@
  * github.com/ThomasVDD
  * ThomasVDD on Instructables 
  * 
- * Board: arduino Fio / arduino pro or pro mini
+ * Board: arduino pro or pro mini
  * Programmer: AVR ISP / AVRISP MKII
  * For burning the bootloader: https://www.arduino.cc/en/Tutorial/ArduinoToBreadboard
  * If you accidently ordered ATMEGA328-PU instead of ATMEGA328P-PU: https://www.instructables.com/id/Bootload-an-ATmega328/
@@ -109,7 +109,7 @@ int numberOfPresets = 6;            // length of the array. First preset used fo
 
 /* ============================================== SETUP =====================================================*/
 void setup() {
-  Serial.begin(4800);               // start serial communication
+  Serial.begin(9600);               // start serial communication
   ina219.begin();                   // initialize ina219
   setupPWM16(regulator_error);                     // initialize the 10 bit pwm
 
