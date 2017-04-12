@@ -23,4 +23,9 @@ Features:
  * Powered by 2 protected 18650 Lithium Ion cells
  * 18 mm spaced banana plugs for compatibility with BNC adapters
 
-![SmartSupply](https://github.com/ThomasVDD/SmartSupply/blob/master/Pictures/SmartSupply.png)
+![SmartSupply](https://github.com/ThomasVDD/SmartSupply/blob/master/Pictures/Front.jpg)
+![SmartSupply](https://github.com/ThomasVDD/SmartSupply/blob/master/Pictures/Inside.jpg)
+![SmartSupply](https://github.com/ThomasVDD/SmartSupply/blob/master/Pictures/Back.jpg)
+![SmartSupply](https://github.com/ThomasVDD/SmartSupply/blob/master/Pictures/PC.jpg)
+
+
