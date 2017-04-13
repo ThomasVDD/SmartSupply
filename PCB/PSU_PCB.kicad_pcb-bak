@@ -37,7 +37,7 @@
   )
 
   (setup
-    (last_trace_width 0.381)
+    (last_trace_width 0.25)
     (user_trace_width 0.001)
     (user_trace_width 0.254)
     (user_trace_width 0.381)
@@ -1897,7 +1897,7 @@
     (fp_text reference R27 (at 5.0735 0.5135 180) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value 6k8 (at 5.0735 -0.6295 180) (layer F.Fab)
+    (fp_text value 680k (at 5.0735 -0.6295 180) (layer F.Fab)
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -1.25 -1.5) (end 11.4 -1.5) (layer F.CrtYd) (width 0.05))
@@ -1929,7 +1929,7 @@
     (fp_text reference R28 (at 5.207 -0.508) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value 2.2k (at 5.08 0.635) (layer F.Fab)
+    (fp_text value 220k (at 5.08 0.635) (layer F.Fab)
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -1.25 -1.5) (end 11.4 -1.5) (layer F.CrtYd) (width 0.05))
@@ -5354,8 +5354,13 @@
     (pad 2 thru_hole circle (at 5 0 180) (size 1.6 1.6) (drill 0.8) (layers *.Cu *.Mask)
       (net 1 GND))
     (model Capacitors_THT.3dshapes/C_Rect_L7.0mm_W2.5mm_P5.00mm.wrl
-      (at (xyz 0 0 0))
+      (at (xyz 0.1 0 0))
       (scale (xyz 0.393701 0.393701 0.393701))
+      (rotate (xyz 0 0 0))
+    )
+    (model Capacitors_ThroughHole.3dshapes/C_Rect_L7_W2_P5.wrl
+      (at (xyz 0.1 0 0))
+      (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
     )
   )
