@@ -32,6 +32,7 @@ These are the most noticable changes from his schematic:
  * I left the FTDI breakout header so you can avoid the FTDI chip (difficult footprint) and use an off the shelf solution
  * Removed ethernet module.
  * Changed screen to more generic type in stead of I2C type.
- * Changed digital voltage to 5V instead of 3.3V
+ * Changed digital voltage to 5V instead of 3.3V.
+ * Added auto calibration to eliminate the error of the 5V regulator.
  * Last but not least: tested the schematic and verified the working. 
 
