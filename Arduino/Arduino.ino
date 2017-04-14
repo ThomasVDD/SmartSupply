@@ -24,12 +24,6 @@ LiquidCrystal lcd(8);
 INA219 ina219;
 
 /* ============================================== DECLARATIONS =====================================================*/
-/* regulator_output is the only value that should be changed to calibrate the powersupply
- * Measure the output voltage of the 5V voltage regulator and put it below
- */
-float regulator_output = 4.94;
-/* Now, the error can be calculated and used to calibrate */
-float regulator_error = regulator_output / 5;
 /* make symbols for battery level*/
 byte batt0[8] = {B00000, B00000, B00000, B00000, B00000, B00000, B00000,};
 byte batt1[8] = {B00000, B00000, B00000, B00000, B00000, B00000, B00111,};
@@ -111,7 +105,15 @@ int numberOfPresets = 6;            // length of the array. First preset used fo
 void setup() {
   Serial.begin(9600);               // start serial communication
   ina219.begin();                   // initialize ina219
-  setupPWM16(regulator_error);                     // initialize the 10 bit pwm
+
+  analogReference(EXTERNAL);        //external voltage reference of 2.048 V
+  pinMode(potentiometerPin, INPUT);
+  pinMode(presetButton, INPUT);
+  digitalWrite(presetButton, HIGH); //turn on pullup resistor
+  pinMode(zeroButton, INPUT);
+  digitalWrite(zeroButton, HIGH);   //turn on pullup resistor
+  pinMode(chargePump, OUTPUT);
+  analogWrite(chargePump, 127);     //50% pwm for charge pump 
 
   lcd.begin(16, 2);                 // initialize lcd & make battery symbols
   lcd.createChar(0, batt0);
@@ -121,15 +123,21 @@ void setup() {
   lcd.createChar(6, batt6);
   lcd.createChar(7, batt7);
 
-  pinMode(presetButton, INPUT);
-  digitalWrite(presetButton, HIGH);   //turn on pullup resistor
-  pinMode(zeroButton, INPUT);
-  digitalWrite(zeroButton, HIGH);    //turn on pullup resistor
-  pinMode(potentiometerPin, OUTPUT);
+  /* Calibrate the PWM based on the 5V rail */
+  float regulator_output = 0;
+  delay(100);
+  for (int i = 0; i< 100; i++){                   // take 100 readings of the 5V rail
+    regulator_output += analogRead(potentiometerPin);
+    delay(10);
+  }
+  regulator_output /= 100;                         // average
+  regulator_output = regulator_output * 2 * 3;     // map 1-2.048V range to corresponding value
+  float regulator_error = regulator_output / 5;    // calculate error with respect to expected 5V
+  setupPWM16(regulator_error);                     // initialize the 10 bit pwm
+  pinMode(potentiometerPin, OUTPUT);    
   digitalWrite(potentiometerPin, HIGH);
-  pinMode(chargePump, OUTPUT);
-  analogWrite(chargePump, 127);       //50% pwm for charge pump 
 
+  /* Retreive varibales from EEPROM */
   encoder0Pos = EEPROMReadInt(0);                    // retreive the previous voltage value from memory
   pos0 = map(encoder0Pos, 0, 50000, 0, 999);         //map to 0 - 5 V ==> 1mA / step
   presetA[0] = map(encoder0Pos, 0, 50000, 0, 999);
@@ -149,8 +157,6 @@ void setup() {
   // common pin  
   pinMode(encoderPinB, INPUT);
   digitalWrite(encoderPinB, HIGH);       // turn on pullup resistor
-
-  analogReference(EXTERNAL);             //external voltage reference of 2.048 V
   
   /* initialize all the readings to 0 */
   for (int thisReading = 0; thisReading < numReadingsV; thisReading++) {
@@ -168,7 +174,7 @@ void setup() {
   lcd.print("  SmartSupply");
   lcd.setCursor(0, 1);
   lcd.print("   ThomasVDD");
-  delay(2500);
+  delay(2000);
 
   /* setup 16x2 lcd display:
      ------------------
@@ -525,7 +531,7 @@ void setupPWM16(float error) {
            | _BV(WGM11);              /* mode 14: fast PWM, TOP=ICR1 */
   TCCR1B = _BV(WGM13) | _BV(WGM12)
            | _BV(CS10);               /* no prescaling */
-  ICR1 = 0x3E8 * error;                       /* TOP counter value = 1000; +/- 10 bit resolution @ 15 kHz*/
+  ICR1 = error*0.996;                       /* TOP counter value = 1000; +/- 10 bit resolution @ 15 kHz*/
 }
 
 /* 16-bit version of analogWrite(). Works only on pins 9 and 10. */
