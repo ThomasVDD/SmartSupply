@@ -137,7 +137,7 @@ void setup() {
   pinMode(potentiometerPin, OUTPUT);    
   digitalWrite(potentiometerPin, HIGH);
 
-  /* Retreive varibales from EEPROM */
+  /* Retreive variables from EEPROM */
   encoder0Pos = EEPROMReadInt(0);                    // retreive the previous voltage value from memory
   pos0 = map(encoder0Pos, 0, 50000, 0, 999);         //map to 0 - 5 V ==> 1mA / step
   presetA[0] = map(encoder0Pos, 0, 50000, 0, 999);
