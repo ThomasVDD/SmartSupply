@@ -103,6 +103,9 @@ int numberOfPresets = 6;            // length of the array. First preset used fo
 
 /* ============================================== SETUP =====================================================*/
 void setup() {
+  pinMode(10, OUTPUT);              //current setting low to keep powersupply off during initialisation
+  digitalWrite(10, LOW);
+  
   Serial.begin(9600);               // start serial communication
   ina219.begin();                   // initialize ina219
 
