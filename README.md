@@ -85,6 +85,8 @@ The last part of this powersupply is the connection with the cruel, outside worl
 
 And that's all there is to it! 
 
+## Licensing and acknowledgements
+
 ![License](https://github.com/ThomasVDD/SmartSupply/blob/master/Pictures/License.PNG)
 
 This project would never have been possible without the help of some people, so a shootout seems appropriate.
