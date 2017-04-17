@@ -29,6 +29,8 @@ Features:
 ![SmartSupply](https://github.com/ThomasVDD/SmartSupply/blob/master/Pictures/PC.jpg)
 
 
+![License](https://github.com/ThomasVDD/SmartSupply/blob/master/Pictures/License.PNG)
+
 This project would never have been possible without the help of some people, so a shootout seems appropriate.
  * This project is based on EEVBLOG's uSupply project and his Rev C schematic. So a special thanks to David L. Jones for releasing his schematics under an open source license and sharing all his knowledge.
  * A huge thanks to Johan Pattyn for producing the prototypes of this project. 
