@@ -3,7 +3,7 @@
   (general
     (links 303)
     (no_connects 0)
-    (area 47.534999 26.994999 216.995001 155.286001)
+    (area 47.694999 26.994999 216.995001 155.005001)
     (thickness 1.6)
     (drawings 81)
     (tracks 1081)
@@ -37,7 +37,7 @@
   )
 
   (setup
-    (last_trace_width 0.508)
+    (last_trace_width 0.25)
     (user_trace_width 0.001)
     (user_trace_width 0.254)
     (user_trace_width 0.381)
@@ -1667,7 +1667,7 @@
     )
   )
 
-  (module Housings_SOIC:SOIC-8_3.9x4.9mm_Pitch1.27mm (layer F.Cu) (tedit 59109BF3) (tstamp 58A3B0BD)
+  (module Housings_SOIC:SOIC-8_3.9x4.9mm_Pitch1.27mm (layer F.Cu) (tedit 5910A3D0) (tstamp 58A3B0BD)
     (at 144.31 148.18 180)
     (descr "8-Lead Plastic Small Outline (SN) - Narrow, 3.90 mm Body [SOIC] (see Microchip Packaging Specification 00000049BS.pdf)")
     (tags "SOIC 1.27")
@@ -1676,7 +1676,7 @@
     (fp_text reference U2 (at 0.254 1.524 180) (layer F.SilkS)
       (effects (font (size 1 1) (thickness 0.15)))
     )
-    (fp_text value BQ2057WSN (at 0.08 0.21 180) (layer F.Fab)
+    (fp_text value BQ2057WSN_SOIC (at 2.07 -0.01 180) (layer F.Fab)
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_line (start -0.95 -2.45) (end 1.95 -2.45) (layer F.Fab) (width 0.15))
