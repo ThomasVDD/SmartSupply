@@ -1,10 +1,7 @@
 ** Drc report for C:/Users/Thoma/Google Drive/5 Projecten/SmartSupply/PCB/PSU_PCB.kicad_pcb **
 ** Created on  **
 
-** Found 1 DRC errors **
-ErrType(4): Track near pad
-    @ (149.662 mm,141.936 mm): Track 0.508 mm, net [Net-(Q1-Pad3)] (105) on layer F.Cu, length: 7.043 mm
-    @ (147.010 mm,146.275 mm): Pad 4 on F.Cu, Non-copper of U2
+** Found 0 DRC errors **
 
 ** Found 0 unconnected pads **
 
