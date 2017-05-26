@@ -21,7 +21,7 @@ SmartSupply is a digital battery powered lab powersupply. It is Arduino compatib
  * Powered by ATMEGA328P, programmed with Arduino IDE
  * PC communication via Java application over micro usb
  * Powered by 2 protected 18650 Lithium Ion cells
- * 18 mm spaced banana plugs for compatibility with BNC adapters
+ * 19 mm spaced banana plugs for compatibility with BNC adapters
 
 ![SmartSupply](https://github.com/ThomasVDD/SmartSupply/blob/master/Pictures/Front.jpg)
 ![SmartSupply](https://github.com/ThomasVDD/SmartSupply/blob/master/Pictures/Inside.jpg)
