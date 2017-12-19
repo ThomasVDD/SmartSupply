@@ -3,7 +3,7 @@
   (general
     (links 303)
     (no_connects 0)
-    (area 47.534999 26.994999 216.995001 155.286001)
+    (area 47.694999 26.994999 216.995001 155.005001)
     (thickness 1.6)
     (drawings 81)
     (tracks 1082)
@@ -37,7 +37,7 @@
   )
 
   (setup
-    (last_trace_width 1.27)
+    (last_trace_width 0.25)
     (user_trace_width 0.001)
     (user_trace_width 0.254)
     (user_trace_width 0.381)
@@ -4292,6 +4292,11 @@
       (at (xyz 0 -0.75 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 90))
+    )
+    (model Display.3dshapes/LCD-016N002L.wrl
+      (at (xyz -0.2 -1.3 0.7))
+      (scale (xyz 2.5 2.5 2.5))
+      (rotate (xyz 90 180 90))
     )
   )
 
